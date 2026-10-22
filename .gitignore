@@ -1,0 +1,45 @@
+# Credenciais e configuracoes locais
+.env
+.env.*
+!.env.example
+.prospectax*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Cadastros, bases, exportacoes e configuracoes de usuarios.
+# JSONs estaticos futuros devem ser revisados e liberados individualmente.
+*.json
+*.jsonl
+*.csv
+*.xlsx
+*.xls
+*.parquet
+*.duckdb*
+*.sqlite*
+*.db
+*.db-*
+private_data/
+dados_parquet/
+site/cache*/
+cache*/
+
+# Backups, executaveis e arquivos compactados nao pertencem ao codigo-fonte
+backup/
+backups/
+logs/
+*.log
+*.exe
+*.zip
+*.rar
+*.7z
+
+# Ambiente Python e arquivos temporarios
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+Thumbs.db
