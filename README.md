@@ -11,6 +11,18 @@ A ferramenta roda no computador de quem a instala e é acessada pelo navegador. 
 3. **Para conhecer as funções:** consulte a tabela abaixo e os limites no final desta página.
 4. **Para usar recursos externos:** veja [APIs](#como-cadastrar-suas-apis), [túnel](#como-funciona-o-tunel) e [base da Receita](#atualizador-da-receita).
 
+## Telas da ferramenta
+
+### Tela de acesso
+
+![Tela de acesso do ProspectaX, com campos de usuário e senha.](docs/imagens/tela-login.png)
+
+### Pesquisa de empresas
+
+![Pesquisa de empresas no ProspectaX, com filtros por CNAE e situação cadastral, mapa por estado e indicadores de resultados.](docs/imagens/pesquisa-empresas.png)
+
+A base de empresas utilizada nas capturas não acompanha o download do programa. Consulte as instruções do [atualizador da Receita](#atualizador-da-receita) para preparar sua própria base.
+
 ## O que a ferramenta oferece
 
 | Área | Funções presentes | O que é necessário |
