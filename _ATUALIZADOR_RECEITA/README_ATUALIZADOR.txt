@@ -17,10 +17,11 @@ Fonte oficial padrao:
 Antes de rodar:
   - Feche o ProspectaX.
   - Garanta internet estavel.
-  - Garanta pelo menos 25 GB livres, idealmente mais.
+  - O script exige pelo menos 60 GB livres.
+  - Reserve preferencialmente 80 GB ou mais em SSD; o volume e os temporarios variam.
   - Tenha paciencia: pode demorar bastante.
 
-Teste leve, sem baixar nada:
+Teste leve: consulta a fonte na internet, sem baixar a base completa:
   python _ATUALIZADOR_RECEITA\atualizar_base_receita.py --dry-run
 
 Usar um mes especifico:
