@@ -1,6 +1,6 @@
 # ProspectaX - pesquisa com fontes e propostas
 
-Esta integração foi aplicada em `C:\Users\USUARIO\Desktop\prospector_local` após autorização. A pasta de atualização continua disponível para testes.
+Esta integração foi aplicada em `<PASTA_DO_PROJETO>` após autorização. A pasta de atualização continua disponível para testes.
 
 Abra `http://127.0.0.1:8765/inteligencia.html`, entre com a conta do sistema e use Ctrl + F5 se necessário. Há atalhos na Prospecção, nos detalhes da empresa, no detalhe do parceiro e na área Ferramentas de negócio.
 

@@ -1,33 +1,30 @@
-# Revisao dos arquivos recebidos
+# Revisao para publicacao
 
-Esta copia foi preparada a partir dos arquivos fornecidos pelo proprietario. Os originais permanecem separados da pasta do repositorio.
+As quatro partes fornecidas pelo proprietario foram reunidas, comparadas com a versao previamente revisada e conferidas antes do envio. Os originais e os arquivos de empacotamento permanecem separados do repositorio.
 
-## Ajustes de privacidade
+## Privacidade e configuracao
 
-- Retirada a chave fixa de assinatura de licencas do servidor. A integracao passa a exigir `PROSPECTAX_LICENSE_SECRET` para gravar licencas assinadas. A verificacao obrigatoria de assinatura recusa configuracao sem chave.
-- Retirado o endpoint particular de licenciamento. Quando necessario, configure `PROSPECTAX_LICENSE_API` no ambiente privado.
-- Retiradas as senhas padrao e a conta de teste do provisionamento inicial. Novas instalacoes precisam de uma senha administrativa propria. Cadastros existentes nao sao alterados por essa mudanca.
-- O servidor passa a escutar somente em loopback por padrao. Nenhum tunel foi aberto para esta revisao.
-- Caminhos com nome pessoal de usuario do Windows foram substituidos nos guias Markdown e removidos do conteudo do PDF tecnico. Os metadados dos PDFs tambem foram limpos.
-- O arquivo de estado de tunel e o executavel Windows de terceiros nao foram incluidos.
-- Acrescentadas exclusoes para credenciais, bases, cadastros, historicos, backups e arquivos gerados.
+- A chave fixa de assinatura de licencas e o endpoint particular de licenciamento continuam fora do codigo publicado. Quando usados, devem ser configurados no ambiente privado.
+- Os caminhos pessoais foram retirados dos guias e do conteudo do PDF tecnico. Os PDFs publicados mantiveram a versao com metadados limpos, em vez de serem substituidos pelos originais recebidos novamente.
+- Foram procurados nomes pessoais, usuarios do computador, caminhos locais, IPs particulares, emails pessoais, documentos e padroes de credenciais nos arquivos preparados para publicacao.
+- A verificacao do tunel incluiu links, tokens, identificadores de conta e arquivos de estado. Nao foi encontrado token de conta ou link pessoal de tunel gravado nos arquivos de codigo e interface revisados.
+- O estado do tunel original nao foi publicado. Os unicos campos desse arquivo recebido eram identificador de processo, horario de criacao e porta; seus valores nao foram copiados para o repositorio.
+- Configuracoes de Cloudflare, bancos, dados privados, cadastros, licencas locais, backups, logs e executaveis de terceiros ficam excluidos pelo .gitignore.
+- Enderecos locais de loopback e URLs oficiais de fontes publicas foram preservados. Esses enderecos tecnicos nao representam um IP particular do proprietario ou uma chave de API pessoal.
+- A obrigacao de revisar o conteudo antes de cada envio esta registrada em AGENTS.md. A revisao se aplica aos arquivos recebidos e nao equivale a garantia de ausencia de vulnerabilidades.
 
-Nao foram encontrados emails pessoais, CPFs formatados ou chaves reconheciveis de APIs externas nos arquivos de texto revisados. A chave fixa de licenciamento foi tratada como sensivel. Essa verificacao se aplica apenas aos arquivos recebidos e nao constitui garantia de ausencia de vulnerabilidades ou auditoria completa do sistema.
+## Excecao autorizada: acesso inicial
 
-## Componentes ausentes
+O proprietario solicitou expressamente preservar o login inicial admin com senha admin123. Essa senha padrao publica faz parte da ferramenta e foi mantida. A criacao inicial aceita uma senha propria por PROSPECTAX_ADMIN_PASSWORD, e os cadastros existentes nao sao sobrescritos. Nenhuma base de usuarios de producao foi publicada.
 
-A pasta `site/` e os programas de `_ATUALIZADOR_RECEITA/` nao estavam nos anexos iniciais. A base Receita/Parquet nao foi recebida e deve continuar fora do GitHub. Sem as telas e a base local, nao e possivel validar o fluxo completo de prospeccao.
+## Validacao executada
 
-As integracoes opcionais com APIs e o licenciamento externo precisam de configuracao e validacao independentes. Credenciais usadas no computador de origem nao foram transferidas.
+- Instalacao das dependencias do servidor e do atualizador em ambiente Python isolado.
+- Compilacao de 18 arquivos Python e verificacao de sintaxe dos sete arquivos JavaScript e cinco scripts embutidos nas paginas.
+- Conversao de CSVs sinteticos em ZIP para Parquet, geracao de indice DuckDB e validacao das contagens, incluindo CNAE secundario.
+- Inicializacao pelo iniciador real, restrita a loopback, usando pastas temporarias. Health, rejeicao de acesso sem autenticacao, login e busca no indice responderam corretamente.
+- Login inicial autorizado, armazenamento do hash da senha, preservacao de cadastro existente e substituicao opcional da senha inicial em uma instalacao nova.
+- Teste em Chromium: formulario de login, pagina principal, busca pela interface e exibicao da empresa sintetica; as paginas de parceiros, negocios, inteligencia, radar e administracao responderam.
+- Recusa de assinatura de licencas quando falta uma chave privada configurada.
 
-## Validacao desta copia
-
-- Dependencias instaladas com Python 3.12, DuckDB 1.5.2 e ReportLab 5.0.1; verificacao de dependencias sem conflitos.
-- Todos os modulos Python passaram na compilacao.
-- O provisionamento sem senha explicita foi recusado. Com uma senha temporaria aleatoria, foi criada somente a conta administrativa; uma nova leitura preservou o cadastro. A senha em texto nao foi gravada no arquivo de usuarios.
-- Em servidor restrito a loopback e com pastas temporarias: health respondeu, acesso privado sem sessao foi recusado, senha incorreta foi recusada e login e perfil autenticado responderam corretamente.
-- A assinatura de licencas sem chave privada foi recusada antes de gravar arquivo.
-- A busca pelos valores sensiveis identificados nos originais nao encontrou esses valores no codigo ou no texto extraido dos PDFs preparados.
-- O iniciador informa a ausencia da pasta `site/`, em vez de apresentar a copia como completa.
-
-Os dados e as credenciais do teste foram temporarios. Nao foram usados cadastros reais nem feitas chamadas a integracoes externas. Nao foram testadas a interface, a base da Receita, as integracoes com chaves ou a execucao dos iniciadores no Windows.
+Os testes utilizaram apenas dados sinteticos temporarios. O acesso a fontes externas foi bloqueado nesses testes, e nenhum tunel foi iniciado. Nao foram executados o download nacional da Receita, a substituicao de uma base real, os iniciadores no Windows ou as integracoes que exigem credenciais.

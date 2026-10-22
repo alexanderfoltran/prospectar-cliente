@@ -1,6 +1,6 @@
 # ProspectaX - novas ferramentas de negócio
 
-Instalação: `C:\Users\USUARIO\Desktop\prospector_local`.
+Instalação: `<PASTA_DO_PROJETO>`.
 
 Acesse **http://127.0.0.1:8765/negocios.html** ou use o seu link do túnel com **/negocios.html** ao final. Entre com sua conta do sistema. Se a página estiver antiga, use **Ctrl + F5**.
 

@@ -1,6 +1,6 @@
 # ProspectaX — Fornecedores e Patrocínios
 
-Atualização aprovada e ativa em C:\Users\USUARIO\Desktop\prospector_local.
+Atualização aprovada e ativa em <PASTA_DO_PROJETO>.
 
 ## Uso no sistema original
 
@@ -14,13 +14,13 @@ Os usuários, senhas e registros comerciais atuais foram preservados. Os Parquet
 
 ## Cópia para próximas ideias
 
-A pasta C:\Users\USUARIO\Desktop\prospectax_atualizacao_patrocinio foi mantida. Ela continua na porta 8766 e usa a base da Receita da pasta original em modo de leitura. Cadastros e registros dessa cópia são separados dos registros de produção; não há sincronização automática entre as duas versões.
+A pasta <PASTA_DO_PROJETO> foi mantida. Ela continua na porta 8766 e usa a base da Receita da pasta original em modo de leitura. Cadastros e registros dessa cópia são separados dos registros de produção; não há sincronização automática entre as duas versões.
 
 Use a cópia para avaliar mudanças futuras antes de aprová-las para o sistema original. Não é necessário transferir a base da Receita para ela enquanto esse modo de teste for útil.
 
 ## Backup da implantação
 
-Backup dos arquivos substituídos: `C:\Users\USUARIO\Desktop\prospector_local\backup\antes_patrocinio_20261009-140648\programa_anterior.zip`.
+Backup dos arquivos substituídos: `<PASTA_DO_PROJETO>\backup\antes_patrocinio_20261009-140648\programa_anterior.zip`.
 
 O backup contém o programa anterior. A base da Receita e os registros atuais não foram substituídos. Uma restauração deve ser feita de forma controlada, preservando o túnel, como nesta implantação.
 

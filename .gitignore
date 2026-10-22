@@ -3,6 +3,9 @@
 .env.*
 !.env.example
 .prospectax*
+.cloudflared/
+cloudflared.yml
+cloudflared.yaml
 *.pem
 *.key
 *.p12
@@ -22,6 +25,8 @@
 *.db-*
 private_data/
 dados_parquet/
+dados_parquet_BACKUP*/
+_atualizacao_receita/
 site/cache*/
 cache*/
 
@@ -41,5 +46,6 @@ venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+node_modules/
 .DS_Store
 Thumbs.db

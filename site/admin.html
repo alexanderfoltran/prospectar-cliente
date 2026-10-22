@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProspectaX — Admin</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f4f6f9;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1a2535}
+.topbar{background:#0f2a4a;padding:0 32px;display:flex;align-items:center;justify-content:space-between;height:64px;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.logo{font-family:Georgia,'Times New Roman',serif;color:#fff;font-size:19px;font-weight:700}.logo span{color:#e8541a}
+.topbar-right{font-size:12px;color:rgba(255,255,255,.7);display:flex;gap:16px;align-items:center}
+.topbar-right a{color:rgba(255,255,255,.65);text-decoration:none}.topbar-right a:hover{color:#fff}
+.container{max-width:1120px;margin:32px auto;padding:0 24px}
+h1{font-size:22px;font-weight:700;color:#0f2a4a;margin-bottom:24px}
+.card{background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 16px rgba(15,42,74,.08);margin-bottom:24px}
+.card h2{font-size:15px;font-weight:700;color:#0f2a4a;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid #eef1f7}
+table{width:100%;border-collapse:collapse} th{font-size:11px;font-weight:700;color:#6b7a94;text-transform:uppercase;letter-spacing:.8px;padding:8px 12px;text-align:left;border-bottom:2px solid #eef1f7}
+td{padding:10px 12px;border-bottom:1px solid #eef1f7;font-size:13px;vertical-align:middle} tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}.badge.global_admin{background:#0f2a4a;color:#fff}.badge.company_admin{background:#5b3df5;color:#fff}.badge.seller{background:#eef1f7;color:#1a2535}.badge.ativo{background:#e6f7f1;color:#0d7a4e}.badge.inativo{background:#fff0ee;color:#c8420a}
+.btn{border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;transition:.2s}.btn-primary{background:#0f2a4a;color:#fff}.btn-primary:hover{background:#1a3d6b}.btn-danger{background:#fff0ee;color:#c8420a}.btn-danger:hover{background:#e8541a;color:#fff}.btn-delete{background:#fef2f2;color:#991b1b}.btn-delete:hover{background:#dc2626;color:#fff}.btn-success{background:#e8541a;color:#fff;padding:10px 20px;font-size:13px}.btn-success:hover{background:#c8420a}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}.form-group{display:flex;flex-direction:column;gap:4px}.form-group label{font-size:11px;font-weight:700;color:#0f2a4a;text-transform:uppercase}.form-group input,.form-group select{border:1.5px solid #dde3ec;border-radius:8px;padding:9px 11px;font-size:13px;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;outline:none}.form-group input:focus,.form-group select:focus{border-color:#1a3d6b}
+.msg{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:14px;display:none}.msg.ok{background:#e6f7f1;color:#0d7a4e;display:block}.msg.err{background:#fff0ee;color:#c8420a;display:block}.helper{font-size:12px;color:#6b7a94;margin-top:4px}.hidden{display:none!important}
+.equipe-cell{line-height:1.35}.equipe-sub{font-size:12px;color:#6b7a94;margin-top:2px}
+.modal-backdrop{position:fixed;inset:0;background:rgba(15,42,74,.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}.modal{background:#fff;width:100%;max-width:520px;border-radius:16px;padding:22px;box-shadow:0 20px 50px rgba(15,42,74,.25)}.modal h3{font-size:18px;color:#0f2a4a;margin-bottom:14px}.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:16px}
+@media(max-width:768px){.topbar{padding:0 16px}.topbar-right a:not(:last-child){display:none}.container{padding:0 12px;margin:16px auto}.form-row{grid-template-columns:1fr}table{font-size:12px}th,td{padding:8px 8px}.modal{padding:18px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">ProspectaX<span>.</span> <span style="font-family:Mulish;font-size:13px;font-weight:400;opacity:.6;margin-left:8px">Painel Admin</span></div>
+  <div class="topbar-right">
+    <span id="nomeAdmin"></span>
+    <a href="/">← Voltar ao sistema</a>
+    <a href="#" onclick="fazerLogout()">Sair</a>
+  </div>
+</div>
+
+<div class="container">
+  <h1>⚙ Painel de Administração</h1>
+  <div class="card hidden" id="partnerAdminCard"><h2>Fornecedores e patrocínios</h2><p class="helper">Cadastre parceiros, aprove a publicação, configure benefícios e consulte os resultados.</p><a class="btn btn-success" style="display:inline-block;text-decoration:none;margin-top:12px" href="/fornecedores.html?gestao=1">Gerenciar rede de parceiros</a></div>
+
+  <div class="card hidden" id="securityCard">
+    <h2>🔐 Segurança do administrador geral</h2>
+    <div id="msgSeguranca" class="msg"></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nova senha do admin geral</label>
+        <input type="password" id="adminNovaSenha" placeholder="mínimo 6 caracteres" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label>Confirmar nova senha</label>
+        <input type="password" id="adminConfirmaSenha" placeholder="repita a senha" autocomplete="new-password">
+      </div>
+    </div>
+    <button class="btn btn-success" onclick="trocarSenhaAdminGeral()">Trocar senha do admin geral</button>
+    <div class="helper">Use essa opção para mudar a senha do usuário principal <strong>admin</strong> sem editar o arquivo usuarios.json manualmente.</div>
+  </div>
+
+  <div class="card">
+    <h2>👥 Usuários cadastrados</h2>
+    <div id="msgLista" class="msg"></div>
+    <table>
+      <thead><tr><th>Login</th><th>Nome</th><th>Equipe</th><th>Perfil</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody id="corpoTabela"><tr><td colspan="6" style="text-align:center;color:#6b7a94;padding:20px">Carregando...</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>➕ Criar novo usuário</h2>
+    <div id="msgCriar" class="msg"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Login</label><input type="text" id="novoLogin" placeholder="ex: joao123"></div>
+      <div class="form-group"><label>Nome completo</label><input type="text" id="novoNome" placeholder="ex: João Silva"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Senha</label><input type="password" id="novaSenha" placeholder="mínimo 6 caracteres"></div>
+      <div class="form-group"><label>Perfil</label>
+        <select id="novoPerfil" onchange="atualizarCamposPerfil()"></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Nome da equipe</label>
+        <input type="text" id="empresaNome" placeholder="ex: Auto Center Silva">
+        <div class="helper" id="empresaHint">Para vendedor, informe a equipe à qual ele pertence.</div>
+      </div>
+      <div class="form-group hidden" id="grupoLimiteSubcontas">
+        <label>Limite de subcontas</label>
+        <input type="number" id="limiteSubcontas" min="1" value="1" placeholder="ex: 5">
+        <div class="helper">Defina quantos vendedores essa equipe poderá criar.</div>
+      </div>
+    </div>
+    <button class="btn btn-success" onclick="criarUsuario()">✅ Criar usuário</button>
+  </div>
+
+  <div class="card hidden" id="teamRulesCard">
+    <h2>⏱ Regras de prazo por status</h2>
+    <div id="msgRules" class="msg"></div>
+    <p class="helper" style="margin-bottom:12px">Defina quantos dias cada status fica bloqueado antes de voltar automaticamente para <strong>Novo</strong>. Use 0 para não resetar automaticamente.</p>
+    <div class="form-row">
+      <div class="form-group"><label>Contato realizado</label><input type="number" min="0" id="rule_contato_realizado" value="0"></div>
+      <div class="form-group"><label>Não atendeu</label><input type="number" min="0" id="rule_nao_atendeu" value="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Aguardando retorno</label><input type="number" min="0" id="rule_aguardando_retorno" value="0"></div>
+      <div class="form-group"><label>Proposta enviada</label><input type="number" min="0" id="rule_proposta_enviada" value="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Fechado</label><input type="number" min="0" id="rule_fechado" value="0"></div>
+      <div class="form-group"><label>Sem interesse</label><input type="number" min="0" id="rule_sem_interesse" value="0"></div>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="salvarRegrasStatus()">💾 Salvar regras</button>
+      <button class="btn btn-danger" onclick="resetarStatusEquipe()">♻️ Resetar status com prazo</button>
+      <button class="btn btn-danger" onclick="resetarTodosStatusEquipe()">🧹 Resetar TODOS os status</button>
+    </div>
+    <div class="helper" style="margin-top:10px">O reset manual usa apenas os status com dias maiores que 0.</div>
+  </div>
+
+  <div class="card hidden" id="sellerDashCard">
+    <h2>📊 Dashboard dos vendedores</h2>
+    <div id="msgDash" class="msg"></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Vendedor</label>
+        <select id="sellerSelect" onchange="renderSellerDashboard()"></select>
+      </div>
+    </div>
+    <div id="sellerDashSummary" class="helper">Selecione um vendedor.</div>
+    <div style="overflow:auto;margin-top:12px">
+      <table>
+        <thead><tr><th>Login</th><th>Nome</th><th>Clientes bloqueados</th><th>Movimentações</th><th>Última atividade</th></tr></thead>
+        <tbody id="sellerDashTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-backdrop" id="modalEquipeBg">
+  <div class="modal">
+    <h3>Editar equipe</h3>
+    <div id="msgEquipe" class="msg"></div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Login do administrador da empresa</label>
+      <input type="text" id="editEquipeLogin" disabled>
+    </div>
+    <div class="form-group" style="margin-bottom:12px">
+      <label>Nome da equipe</label>
+      <input type="text" id="editEquipeNome" placeholder="ex: Auto Center Silva">
+    </div>
+    <div class="form-group">
+      <label>Limite de subcontas</label>
+      <input type="number" id="editEquipeLimite" min="1" value="1">
+      <div class="helper" id="editEquipeUso">—</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-danger" onclick="fecharEquipeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="salvarEquipeModal()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOKEN = localStorage.getItem('prospectax_token');
+let me = null;
+let equipeEditando = null;
+
+function api(url, opts={}) {
+  return fetch(url, {...opts, headers:{...(opts.headers||{}), 'X-Auth-Token':TOKEN||'', 'Content-Type':'application/json'}});
+}
+function msg(id, tipo, texto) {
+  const el = document.getElementById(id); el.className = `msg ${tipo}`; el.textContent = texto; el.style.display = 'block';
+  setTimeout(() => { el.style.display='none'; }, 5000);
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+
+function isGlobalAdmin(){ return !!(me && (me.is_global_admin || me.scope === 'global_admin' || me.usuario === 'admin')); }
+function isCompanyAdmin(){ return !!(me && me.scope === 'company_admin' && !isGlobalAdmin()); }
+
+function normalizarPerfilUsuario(u) {
+  const login = u.usuario||u.login||u.user||'';
+  const role = u.role||u.perfil||'cliente';
+  const scope = u.scope||'';
+  if (login === 'admin' || scope === 'global_admin') return {label:'Administrador geral', css:'global_admin'};
+  if (scope === 'company_admin' || (role === 'admin' && login !== 'admin')) return {label:'Administrador da empresa', css:'company_admin'};
+  return {label:'Vendedor', css:'seller'};
+}
+
+function preencherPerfis(){
+  const sel = document.getElementById('novoPerfil');
+  const opts = [];
+  if (isGlobalAdmin()) {
+    opts.push('<option value="global_admin">Administrador geral</option>');
+    opts.push('<option value="company_admin">Administrador da empresa</option>');
+    opts.push('<option value="seller">Vendedor — prospecção</option>');
+  } else {
+    opts.push('<option value="seller">Vendedor — prospecção</option>');
+  }
+  sel.innerHTML = opts.join('');
+  if (isCompanyAdmin()) sel.value = 'seller';
+}
+
+function atualizarCamposPerfil() {
+  const perfil = document.getElementById('novoPerfil').value;
+  const grupoLimite = document.getElementById('grupoLimiteSubcontas');
+  const empresaHint = document.getElementById('empresaHint');
+  if (perfil === 'company_admin') {
+    grupoLimite.classList.remove('hidden');
+    empresaHint.textContent = 'Informe o nome da equipe e o limite de subcontas desse administrador.';
+  } else if (perfil === 'global_admin') {
+    grupoLimite.classList.add('hidden');
+    empresaHint.textContent = 'Administrador geral não precisa de equipe.';
+  } else {
+    grupoLimite.classList.add('hidden');
+    empresaHint.textContent = isGlobalAdmin()
+      ? 'Para vendedor, informe a equipe à qual ele pertence.'
+      : `Você só pode criar vendedores da sua equipe.`;
+  }
+}
+
+api('/api/me').then(r=>r.json()).then(d => {
+  if (!d.usuario && !d.user) { window.location.href='/login'; return; }
+  if ((d.role||d.perfil) !== 'admin') { window.location.href='/'; return; }
+  me = d;
+  document.getElementById('nomeAdmin').textContent = d.nome||d.user||d.usuario;
+  preencherPerfis();
+  atualizarCamposPerfil();
+  if (isGlobalAdmin()) {
+    document.getElementById('partnerAdminCard').classList.remove('hidden');
+    const sec = document.getElementById('securityCard');
+    if (sec) sec.classList.remove('hidden');
+  }
+  carregarUsuarios();
+  loadExtraAdminPanels();
+}).catch(() => window.location.href='/login');
+
+async function carregarUsuarios() {
+  const res = await api('/api/admin/users');
+  const data = await res.json();
+  const lista = data.users || data.usuarios || [];
+  const tbody = document.getElementById('corpoTabela');
+  if (!lista.length) { tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:#6b7a94;padding:20px">Nenhum usuário.</td></tr>'; return; }
+  tbody.innerHTML = lista.map(u => {
+    const login = u.usuario||u.login||u.user||'';
+    const ativo = u.ativo !== false;
+    const info = normalizarPerfilUsuario(u);
+    const global = info.css === 'global_admin';
+    const companyAdmin = info.css === 'company_admin';
+    const equipeNome = u.company_name || u.empresa_nome || u.empresa || '—';
+    const usadas = Number(u.subcontas_usadas||0);
+    const limite = Number(u.subcontas_limite||0);
+    const equipeHtml = companyAdmin
+      ? `<div class="equipe-cell"><div>${esc(equipeNome)}</div><div class="equipe-sub">${usadas}/${limite} subcontas</div></div>`
+      : `<div class="equipe-cell">${esc(equipeNome)}</div>`;
+    const equipeBtn = (isGlobalAdmin() && companyAdmin)
+      ? `<button class="btn btn-primary" onclick="abrirEquipeModal('${encodeURIComponent(login)}','${encodeURIComponent(equipeNome)}',${limite},${usadas})">➖ Equipe</button>`
+      : '';
+    return `<tr>
+      <td><strong>${esc(login)}</strong></td>
+      <td>${esc(u.nome||'-')}</td>
+      <td>${equipeHtml}</td>
+      <td><span class="badge ${info.css}">${info.label}</span></td>
+      <td><span class="badge ${ativo?'ativo':'inativo'}">${ativo?'Ativo':'Inativo'}</span></td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        ${global ? (login === (me.usuario||me.user||'') ? `<button class="btn btn-primary" onclick="alterarSenha('${encodeURIComponent(login)}')">🔑 Trocar minha senha</button><span style="color:#6b7a94;font-size:11px">protegido</span>` : '<span style="color:#6b7a94;font-size:11px">protegido</span>') : `${equipeBtn}<button class="btn btn-primary" onclick="alterarSenha('${encodeURIComponent(login)}')">🔑 Senha</button><button class="btn btn-danger" onclick="toggleAtivo('${encodeURIComponent(login)}',${ativo})">${ativo?'Desativar':'Ativar'}</button><button class="btn btn-delete" onclick="deletarUsuario('${encodeURIComponent(login)}')">🗑 Deletar</button>`}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function criarUsuario() {
+  const login = document.getElementById('novoLogin').value.trim();
+  const nome = document.getElementById('novoNome').value.trim();
+  const senha = document.getElementById('novaSenha').value;
+  const perfilUi = document.getElementById('novoPerfil').value;
+  let equipeNome = document.getElementById('empresaNome').value.trim();
+  const limiteSubcontas = parseInt(document.getElementById('limiteSubcontas').value || '1', 10);
+
+  if (!login || !nome || !senha) { msg('msgCriar','err','Preencha login, nome e senha.'); return; }
+  if (senha.length < 6) { msg('msgCriar','err','A senha precisa ter pelo menos 6 caracteres.'); return; }
+  if (perfilUi !== 'global_admin' && !equipeNome) { msg('msgCriar','err','Informe o nome da equipe.'); return; }
+  if (perfilUi === 'company_admin' && (!limiteSubcontas || limiteSubcontas < 1)) { msg('msgCriar','err','Informe um limite de subcontas válido.'); return; }
+
+  const payload = { usuario:login, nome, senha };
+  if (perfilUi === 'global_admin') {
+    payload.perfil = 'admin';
+    payload.scope = 'global_admin';
+  } else if (perfilUi === 'company_admin') {
+    payload.perfil = 'admin';
+    payload.empresa_nome = equipeNome;
+    payload.limite_subcontas = limiteSubcontas;
+  } else {
+    payload.perfil = 'cliente';
+    payload.empresa_nome = equipeNome;
+  }
+
+  const res = await api('/api/admin/users', {method:'POST', body:JSON.stringify(payload)});
+  const data = await res.json();
+  if (!data.ok) { msg('msgCriar','err', data.error || 'Erro ao criar usuário.'); return; }
+
+  document.getElementById('novoLogin').value='';
+  document.getElementById('novoNome').value='';
+  document.getElementById('novaSenha').value='';
+  document.getElementById('empresaNome').value='';
+  document.getElementById('limiteSubcontas').value='1';
+  preencherPerfis();
+  atualizarCamposPerfil();
+  await carregarUsuarios();
+  msg('msgCriar','ok', perfilUi === 'company_admin' ? `Administrador da empresa criado com ${data.subcontas_limite || limiteSubcontas} subconta(s).` : 'Usuário criado com sucesso.');
+}
+
+function abrirEquipeModal(loginEnc, nomeEnc, limite, usadas){
+  const login = decodeURIComponent(loginEnc);
+  const nome = decodeURIComponent(nomeEnc || '');
+  equipeEditando = { login };
+  document.getElementById('editEquipeLogin').value = login;
+  document.getElementById('editEquipeNome').value = nome === '—' ? '' : nome;
+  document.getElementById('editEquipeLimite').value = Math.max(1, Number(limite||1));
+  document.getElementById('editEquipeUso').textContent = `${Number(usadas||0)} subconta(s) em uso atualmente.`;
+  document.getElementById('msgEquipe').style.display='none';
+  document.getElementById('modalEquipeBg').style.display='flex';
+}
+function fecharEquipeModal(){
+  equipeEditando = null;
+  document.getElementById('modalEquipeBg').style.display='none';
+}
+async function salvarEquipeModal(){
+  if (!equipeEditando || !equipeEditando.login) return;
+  const empresa_nome = document.getElementById('editEquipeNome').value.trim();
+  const limite_subcontas = parseInt(document.getElementById('editEquipeLimite').value || '1', 10);
+  if (!empresa_nome) { msg('msgEquipe','err','Informe o nome da equipe.'); return; }
+  if (!limite_subcontas || limite_subcontas < 1) { msg('msgEquipe','err','Informe um limite válido.'); return; }
+  const res = await api(`/api/admin/users/${encodeURIComponent(equipeEditando.login)}`, {method:'POST', body:JSON.stringify({empresa_nome, limite_subcontas})});
+  const data = await res.json();
+  if (!data.ok) { msg('msgEquipe','err', data.error || 'Erro ao salvar equipe.'); return; }
+  const loginSalvo = equipeEditando.login;
+  const novoLimite = data?.user?.limite_subcontas ?? limite_subcontas;
+  fecharEquipeModal();
+  await carregarUsuarios();
+  msg('msgLista','ok', `Equipe de "${loginSalvo}" atualizada para ${novoLimite} subconta(s).`);
+}
+
+async function trocarSenhaAdminGeral() {
+  if (!isGlobalAdmin()) { msg('msgSeguranca','err','Acesso negado.'); return; }
+  const senha = document.getElementById('adminNovaSenha').value;
+  const confirma = document.getElementById('adminConfirmaSenha').value;
+  if (!senha || senha.length < 6) { msg('msgSeguranca','err','A senha precisa ter pelo menos 6 caracteres.'); return; }
+  if (senha !== confirma) { msg('msgSeguranca','err','As senhas não conferem.'); return; }
+  const login = me.usuario || me.user || 'admin';
+  const res = await api(`/api/admin/users/${encodeURIComponent(login)}`, {method:'POST', body:JSON.stringify({senha})});
+  const data = await res.json();
+  if (data.ok) {
+    document.getElementById('adminNovaSenha').value='';
+    document.getElementById('adminConfirmaSenha').value='';
+    msg('msgSeguranca','ok','Senha do administrador geral alterada com sucesso.');
+  } else {
+    msg('msgSeguranca','err', data.error || 'Erro ao alterar senha.');
+  }
+}
+
+async function alterarSenha(loginEnc) {
+  const login = decodeURIComponent(loginEnc);
+  const senha = prompt(`Nova senha para "${login}":`);
+  if (!senha) return;
+  if (senha.length < 6) { alert('A senha precisa ter pelo menos 6 caracteres.'); return; }
+  const res = await api(`/api/admin/users/${encodeURIComponent(login)}`, {method:'POST', body:JSON.stringify({senha})});
+  const data = await res.json();
+  if (data.ok) msg('msgLista','ok', `Senha de "${login}" alterada!`);
+  else msg('msgLista','err', data.error || 'Erro ao alterar senha.');
+}
+async function toggleAtivo(loginEnc, ativoAtual) {
+  const login = decodeURIComponent(loginEnc);
+  const res = await api(`/api/admin/users/${encodeURIComponent(login)}`, {method:'POST', body:JSON.stringify({ativo:!ativoAtual})});
+  const data = await res.json();
+  if (data.ok) { await carregarUsuarios(); msg('msgLista','ok', `"${login}" ${ativoAtual?'desativado':'ativado'}!`); }
+  else msg('msgLista','err', data.error || 'Erro ao alterar status.');
+}
+async function deletarUsuario(loginEnc) {
+  const login = decodeURIComponent(loginEnc);
+  if (!confirm(`Tem certeza que deseja DELETAR permanentemente o usuário "${login}"?\nEsta ação não pode ser desfeita.`)) return;
+  const res = await api(`/api/admin/users/${encodeURIComponent(login)}/delete`, {method:'POST', body:JSON.stringify({})});
+  const data = await res.json();
+  if (data.ok) { await carregarUsuarios(); msg('msgLista','ok', `Usuário "${login}" deletado!`); }
+  else msg('msgLista','err', data.error || 'Erro ao deletar.');
+}
+
+let teamDashboardData=[];
+const STATUS_RULE_FIELDS=['contato_realizado','nao_atendeu','aguardando_retorno','proposta_enviada','fechado','sem_interesse'];
+
+async function loadExtraAdminPanels(){
+  if (isCompanyAdmin()) {
+    document.getElementById('teamRulesCard').classList.remove('hidden');
+    document.getElementById('sellerDashCard').classList.remove('hidden');
+    await Promise.all([carregarRegrasStatus(), carregarDashboardEquipe()]);
+  }
+}
+
+async function carregarRegrasStatus(){
+  try{
+    const res=await api('/api/team-status-rules');
+    const data=await res.json();
+    const rules=data.rules||{};
+    STATUS_RULE_FIELDS.forEach(k=>{const el=document.getElementById('rule_'+k); if(el) el.value=Number(rules[k]||0);});
+  }catch(e){}
+}
+
+async function salvarRegrasStatus(){
+  const rules={};
+  STATUS_RULE_FIELDS.forEach(k=>{const el=document.getElementById('rule_'+k); const v=Number(el?.value||0); if(v>0) rules[k]=v;});
+  const res=await api('/api/team-status-rules',{method:'POST',body:JSON.stringify({rules})});
+  const data=await res.json();
+  if(data.ok) msg('msgRules','ok','Regras de prazo salvas com sucesso.');
+  else msg('msgRules','err',data.error||'Erro ao salvar regras.');
+}
+
+async function resetarStatusEquipe(){
+  const statuses=STATUS_RULE_FIELDS.filter(k=>Number(document.getElementById('rule_'+k)?.value||0)>0);
+  if(!statuses.length){msg('msgRules','err','Defina pelo menos 1 status com prazo maior que zero.');return;}
+  if(!confirm('Resetar agora todos os clientes dos status configurados para Novo?')) return;
+  const res=await api('/api/team-reset-statuses',{method:'POST',body:JSON.stringify({statuses})});
+  const data=await res.json();
+  if(data.ok) msg('msgRules','ok',`${data.resetados||0} cliente(s) resetados para Novo.`);
+  else msg('msgRules','err',data.error||'Erro ao resetar status.');
+}
+
+async function carregarDashboardEquipe(){
+  try{
+    const res=await api('/api/team-dashboard');
+    const data=await res.json();
+    teamDashboardData=data.sellers||[];
+    const tbody=document.getElementById('sellerDashTable');
+    const sel=document.getElementById('sellerSelect');
+    if(!teamDashboardData.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;color:#6b7a94;padding:20px">Nenhum vendedor encontrado.</td></tr>';sel.innerHTML='';document.getElementById('sellerDashSummary').textContent='Nenhum vendedor encontrado.';return;}
+    tbody.innerHTML=teamDashboardData.map(s=>`<tr><td><strong>${esc(s.login)}</strong></td><td>${esc(s.nome||'-')}</td><td>${Number(s.locked_clients||0)}</td><td>${Number(s.status_changes||0)}</td><td>${s.last_activity?esc(s.last_activity.replace('T',' ')):'—'}</td></tr>`).join('');
+    sel.innerHTML=teamDashboardData.map((s,i)=>`<option value="${esc(s.login)}" ${i===0?'selected':''}>${esc(s.nome||s.login)} (${esc(s.login)})</option>`).join('');
+    renderSellerDashboard();
+  }catch(e){ msg('msgDash','err','Não foi possível carregar o dashboard da equipe.'); }
+}
+
+function renderSellerDashboard(){
+  const login=document.getElementById('sellerSelect')?.value||'';
+  const row=teamDashboardData.find(x=>x.login===login);
+  const out=document.getElementById('sellerDashSummary');
+  if(!row){out.textContent='Selecione um vendedor.';return;}
+  const by=row.by_status||{};
+  const tags=Object.entries(by).map(([k,v])=>`${k.replaceAll('_',' ')}: ${v}`).join(' • ')||'Sem movimentações ainda';
+  out.innerHTML=`<strong>${esc(row.nome||row.login)}</strong><br>Clientes bloqueados: <strong>${Number(row.locked_clients||0)}</strong> · Movimentações: <strong>${Number(row.status_changes||0)}</strong><br><span style="color:#6b7a94">${esc(tags)}</span>`;
+}
+
+async function resetarTodosStatusEquipe(){
+  if(!confirm('Resetar TODOS os status da equipe para Novo? Isso inclui vendedores e administrador da empresa.')) return;
+  const res=await api('/api/team-reset-all-statuses',{method:'POST',body:JSON.stringify({})});
+  const data=await res.json();
+  if(data.ok){
+    msg('msgRules','ok',`${data.resetados||0} cliente(s) resetados para Novo.`);
+    carregarDashboardEquipe();
+  } else {
+    msg('msgRules','err',data.error||'Erro ao resetar todos os status.');
+  }
+}
+
+function fazerLogout(){ api('/api/logout',{method:'POST'}).finally(()=>{ localStorage.clear(); window.location.href='/login'; }); }
+window.addEventListener('click', (e) => { if (e.target && e.target.id === 'modalEquipeBg') fecharEquipeModal(); });
+</script>
+</body>
+</html>

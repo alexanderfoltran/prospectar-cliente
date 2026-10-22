@@ -1,0 +1,4 @@
+# Instalar somente na máquina que preparar a base da Receita.
+-r requirements.txt
+pandas
+pyarrow
