@@ -15,6 +15,7 @@ A revisao de dados pessoais e credenciais e obrigatoria antes de cada envio ao G
 
 ## Preservacao e validacao
 
+- Use a identidade da conta proprietaria do GitHub e um endereco publico noreply nos commits. As descricoes devem ser neutras, sem marcas de autoria de ferramentas de edicao ou automacao. Preserve os avisos de licenca de terceiros quando forem legalmente necessarios.
 - Preserve os arquivos originais recebidos e os dados da instalacao do proprietario. Use somente dados e credenciais temporarios nos testes.
 - Preserve o servidor local por padrao e a ausencia de segredo fixo de licenca. Preserve tambem a excecao do login inicial autorizada acima.
 - Mantenha os modulos Python e iniciadores na raiz, a interface em site/ e os utilitarios em _ATUALIZADOR_RECEITA/.
